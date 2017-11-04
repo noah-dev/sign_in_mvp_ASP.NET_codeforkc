@@ -6,15 +6,14 @@ using System.Web;
 
 namespace SignInMP_00.Models
 {
-    public class SignInDB : DbContext
+    public class AppDBContext : DbContext
     {
-        public SignInDB() : base("SignInDB")
+        public AppDBContext() : base("SignInAppDB")
         {
 
         }
 
-        public DbSet<Member> Members {get; set;}
-
+        public DbSet<Member> Members { get; set; }
         public DbSet<SignIn> SignIns { get; set; }
     }
 }

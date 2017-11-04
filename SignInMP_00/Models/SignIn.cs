@@ -8,8 +8,6 @@ namespace SignInMP_00.Models
     public class SignIn
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public int DateTimeUnix { get; set; }
     }
 }
