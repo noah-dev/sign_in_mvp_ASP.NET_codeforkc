@@ -1,24 +1,42 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
-</div>
+﻿<body ng-app="signInApp" ng-cloak="">
+
+    <md-toolbar class="md-toolbar-tools" id="toolbar">
+        <h1>Code for KC Sign In</h1>
+    </md-toolbar>
+    <br>
+    <md-content layout-sm="column" layout="row" layout-align="center start">
+        <div flex-sm flex-gt-sm="30" layout="column">
+            <md-card id="MainCard" class="content">
+                <img src="~/Angular/static/assets/images/Code_For_KC_Cropped.png" />
+
+                <md-card-actions ng-controller="signInCtrl as sic" layout="column" layout-align="center center">
+                    <form name="signInForm" ng-submit="sic.signIn(sic.selectedItem, sic.searchText)">
+                        <md-autocomplete id="MainInput"
+                                         ng-disabled="sic.mainInputDisabled"
+                                         required=""
+                                         md-no-cache="true"
+                                         md-selected-item="sic.selectedItem"
+                                         md-search-text="sic.searchText"
+                                         md-items="item in sic.filterMembers(sic.searchText)"
+                                         md-item-text="item.name"
+                                         md-min-length="0"
+                                         placeholder="What's your name?">
+                            <md-item-template>
+                                <span md-highlight-text="sic.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                            </md-item-template>
+                            <md-not-found>"{{sic.searchText}}" not found</md-not-found>
+                        </md-autocomplete>
+                        <br>
+                        <div layout="row" layout-align="center center">
+                            <md-button ng-disabled="sic.mainInputDisabled" type="submit" id="signInBtn" class="md-raised md-accent">Sign In</md-button>
+                        </div>
+                        <br>
+                        <br>
+                    </form>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </md-content>
+
+    <script src="~/Angular/static/src/app.js"></script>
+</body>
