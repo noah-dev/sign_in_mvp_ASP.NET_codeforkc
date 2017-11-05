@@ -200,7 +200,6 @@
     <Content Include="Angular\static\assets\styles\signin.css" />
     <Content Include="Angular\static\assets\styles\toast.css" />
     <Content Include="Angular\static\src\app.js" />
-    <Content Include="Angular\static\src\app.spec.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\angular-material.css" />
     <Content Include="Content\angular-material.layout-attributes.css" />

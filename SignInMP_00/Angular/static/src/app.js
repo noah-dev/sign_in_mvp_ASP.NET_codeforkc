@@ -22,7 +22,7 @@ app.factory('Config', function(){
         _this.signInErrorTheme = "toast-error";
         _this.signInErrorDelay = 2000;
 
-        _this.dbURL = "http://localhost:1000/signin"
+        _this.dbURL = "/api/members"
     }
 });
 
@@ -43,7 +43,7 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
     _this.init();
     function init(){
         _this.mainInputDisabled = true;
-        _this.getMembersDB().then(res=>{
+        _this.getMembersDB().then(res => {
             _this.members = res.data;
             _this.mainInputDisabled = false;
         })
@@ -57,7 +57,7 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         } else {
             for(var i = 0; i < _this.members.length; i++){
                 var member = _this.members[i];
-                if (member.name.toLowerCase().indexOf(query.toLowerCase()) == 0){
+                if (member.name.toLowerCase().indexOf(query.toLowerCase()) === 0){
                     filteredNames.push(member);
                 }
             }
@@ -69,6 +69,14 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         var res, name;
         res = _this.confirmSignIn(member, searchText);
         name = res.member ? res.member.name : searchText;
+
+        // Write method will need to be reworked.
+        _this.updateUI(res.status, name);
+        _this.getMembersDB().then(readDB => {
+            _this.members = readDB.data;
+        })
+
+        /*
         if (res.status) {
             _this.newRecordDB(res.member).then(resDB=>{
                 if (resDB.status){
@@ -81,14 +89,15 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         } else {
             _this.updateUI(res.status, name);
         }
+        */
     }
 
     function confirmSignIn(member, searchText){
         var status, res = {}; 
         // If the user does not select an item but presses enter, the member object will be null
         // But if the user got the spelling right, then populate the member object
-        if (member == null){
-            member = filterMembers(searchText).length == 1 ? filterMembers(searchText)[0] : null;
+        if (member === null){
+            member = filterMembers(searchText).length === 1 ? filterMembers(searchText)[0] : null;
         } 
 
         // If this is a valid member, set status to true. Otherwise false.
@@ -101,12 +110,18 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
     function getMembersDB(){
         return $http({
             method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
             url: _this.CONFIG.dbURL,
         })
     }
     function newRecordDB(member){
         return $http({
             method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
             url: _this.CONFIG.dbURL+"?id="+member.id
         }).then(res=>{
             return res.data;
