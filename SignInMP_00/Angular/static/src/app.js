@@ -44,9 +44,24 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
     function init(){
         _this.mainInputDisabled = true;
         _this.getMembersDB().then(res => {
-            _this.members = res.data;
+            _this.members = TEMP_workAround(res.data);
             _this.mainInputDisabled = false;
         })
+    }
+
+    // This really should be done on the ASP.NET side, but that will have to wait for another day
+    // I mean, there is no reason why all the member's first, last names and emails should be exposed.
+    // Fortunately this is all mock data, but real data should be better protected.
+    function TEMP_workAround(members) {
+        var formattedMembers = [];
+        for (var i = 0; i < members.length; i++) {
+            var member = members[i];
+            var formattedMember = {};
+            formattedMember.id = member.memberId;
+            formattedMember.name = member.FirstName + " " + member.LastName;
+            formattedMembers.push(formattedMember);
+        }
+        return formattedMembers;
     }
 
     function filterMembers (query) {
@@ -70,10 +85,10 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         res = _this.confirmSignIn(member, searchText);
         name = res.member ? res.member.name : searchText;
 
-        // Write method will need to be reworked.
+        // Temporary work around. Completely due to inexperience with ASP.NET
         _this.updateUI(res.status, name);
-        _this.getMembersDB().then(readDB => {
-            _this.members = readDB.data;
+        _this.getMembersDB().then(res => {
+            _this.members = TEMP_workAround(res.data);
         })
 
         /*
