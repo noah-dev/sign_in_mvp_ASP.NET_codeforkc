@@ -1,4 +1,3 @@
-// https://material.angularjs.org/1.1.5/demo/autocomplete
 app = angular.module('signInApp',['ngMaterial'])
 .config(($mdThemingProvider) => {
     $mdThemingProvider.theme('default')
@@ -23,6 +22,7 @@ app.factory('Config', function(){
         _this.signInErrorDelay = 2000;
 
         _this.dbURL = "/api/members"
+        _this.dbURlWrite = "/api/SignIns"
     }
 });
 
@@ -57,7 +57,7 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         for (var i = 0; i < members.length; i++) {
             var member = members[i];
             var formattedMember = {};
-            formattedMember.id = member.memberId;
+            formattedMember.id = member.MemberId;
             formattedMember.name = member.FirstName + " " + member.LastName;
             formattedMembers.push(formattedMember);
         }
@@ -85,26 +85,21 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         res = _this.confirmSignIn(member, searchText);
         name = res.member ? res.member.name : searchText;
 
-        // Temporary work around. Completely due to inexperience with ASP.NET
-        _this.updateUI(res.status, name);
-        _this.getMembersDB().then(res => {
-            _this.members = TEMP_workAround(res.data);
-        })
-
-        /*
         if (res.status) {
-            _this.newRecordDB(res.member).then(resDB=>{
-                if (resDB.status){
+            _this.newRecordDB(res.member).then(resDB => {
+                if (resDB.Id){
                     _this.updateUI(res.status, name);
-                    _this.getMembersDB().then(readDB=>{
-                        _this.members = readDB.data;
+
+                    // Temporary work around. Completely due to inexperience with ASP.NET
+                    _this.getMembersDB().then(res => {
+                        _this.members = TEMP_workAround(res.data);
                     })
                 }
             });
         } else {
             _this.updateUI(res.status, name);
         }
-        */
+        
     }
 
     function confirmSignIn(member, searchText){
@@ -133,11 +128,12 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
     }
     function newRecordDB(member){
         return $http({
-            method: 'GET',
+            method: 'POST',
             headers: {
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            url: _this.CONFIG.dbURL+"?id="+member.id
+            data: {"MemberId": member.id },
+            url: _this.CONFIG.dbURlWrite
         }).then(res=>{
             return res.data;
         })

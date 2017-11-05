@@ -11,7 +11,6 @@ namespace SignInMP_00.Models
         public int Id { get; set; }
         [Required]
         public int MemberId { get; set; }
-        [Required]
         public int DateTimeUnix { get; set; }
     }
 }
