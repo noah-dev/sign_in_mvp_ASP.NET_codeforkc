@@ -88,7 +88,7 @@ function signInCtrl ($q,  $http, $timeout, $mdToast, Config) {
         if (res.status) {
             _this.newRecordDB(res.member).then(resDB => {
                 if (resDB.Id){
-                    _this.updateUI(res.status, name);
+                    _this.updateUI(true, name);
 
                     // Temporary work around. Completely due to inexperience with ASP.NET
                     _this.getMembersDB().then(res => {

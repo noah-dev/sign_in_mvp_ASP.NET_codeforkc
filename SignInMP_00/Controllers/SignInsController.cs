@@ -80,6 +80,7 @@ namespace SignInMP_00.Controllers
             }
             // Append unix time as of write. There is probably a way to replicat this behavior in model side,
             // so this will also be a candidate for refactoring.
+            // https://stackoverflow.com/questions/17632584/how-to-get-the-unix-timestamp-in-c-sharp
             signIn.DateTimeUnix = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
             db.SignIns.Add(signIn);
             db.SaveChanges();
